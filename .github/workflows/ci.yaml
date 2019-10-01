@@ -31,6 +31,8 @@ jobs:
           dosfstools \
           kpartx \
           rsync \
+          flex \
+          bison \
           && go get \
           github.com/aktau/github-release \
           github.com/cheggaaa/pb \
@@ -41,8 +43,6 @@ jobs:
           go version
           go env
           export GOPATH=$HOME/go
-          ls -la $HOME/go/bin || true
-          sudo ln -s $HOME/go/bin/pi64-build /usr/bin || true
           export PATH=$GOPATH/bin:$PATH
           test -n "$GITHUB_TOKEN" && echo 0 || echo 1
           sudo go env || true
@@ -50,6 +50,8 @@ jobs:
           mkdir -p $GOPATH/src/github.com/bamarni/pi64  
           cp -a . $GOPATH/src/github.com/bamarni/pi64
           sudo go install github.com/bamarni/pi64/cmd/pi64-build
+          ls -la $HOME/go/bin || true
+          sudo ln -s $HOME/go/bin/pi64-build /usr/bin || true
           cd $GOPATH/src/github.com/bamarni/pi64
           sudo pi64-build || true
           sudo make build/pi64-lite.zip
@@ -57,6 +59,7 @@ jobs:
       - run: |
           export GOPATH=$HOME/go
           export PATH=$GOPATH/bin:$PATH    
+          test -n "$GITHUB_TOKEN" && echo 0 || echo 1
           ls -la build
           git remote set-url origin https://khs1994:${GITHUB_TOKEN}@github.com/khs1994/pi64
           make release

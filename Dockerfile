@@ -20,6 +20,7 @@ RUN apt-get update \
         kpartx \
         golang-1.10-go \
         rsync \
+        flex bison \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
     && go get \
