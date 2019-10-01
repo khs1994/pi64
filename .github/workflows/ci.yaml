@@ -31,8 +31,7 @@ jobs:
           dosfstools \
           kpartx \
           rsync \
-          flex \
-          bison \
+          flex bison libssl-dev \
           && go get \
           github.com/aktau/github-release \
           github.com/cheggaaa/pb \
@@ -49,7 +48,7 @@ jobs:
           sudo go version || true
           mkdir -p $GOPATH/src/github.com/bamarni/pi64  
           cp -a . $GOPATH/src/github.com/bamarni/pi64
-          sudo go install github.com/bamarni/pi64/cmd/pi64-build
+          go install github.com/bamarni/pi64/cmd/pi64-build
           ls -la $HOME/go/bin || true
           sudo ln -s $HOME/go/bin/pi64-build /usr/bin || true
           cd $GOPATH/src/github.com/bamarni/pi64
@@ -76,6 +75,8 @@ jobs:
           fetch-depth: 1
       - uses: docker-practice/actions-setup-docker@master
       - run: git remote set-url origin https://khs1994:${GITHUB_TOKEN}@github.com/khs1994/pi64
+        env:
+          GITHUB_TOKEN: ${{ github.token }}      
       - run: docker build -t pi64 .
       - run: mkdir -p build
       - run: docker run -t --rm -v $PWD/build:/go/src/github.com/bamarni/pi64/build pi64
