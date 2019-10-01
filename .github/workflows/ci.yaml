@@ -40,12 +40,16 @@ jobs:
           go version
           go env
           export GOPATH=$HOME/go
-          go env
+          export PATH=$GOPATH/bin:$PATH
+          test -n "$GITHUB_TOKEN" && echo 0 || echo 1
+          sudo go env || true
+          sudo go version || true
           mkdir -p $GOPATH/src/github.com/bamarni/pi64  
           cp -a . $GOPATH/src/github.com/bamarni/pi64
-          go install github.com/bamarni/pi64/cmd/pi64-build
-          export PATH=$GOPATH/bin:$PATH
+          sudo go install github.com/bamarni/pi64/cmd/pi64-build
           cd $GOPATH/src/github.com/bamarni/pi64
-          make build/pi64-lite.zip
+          sudo pi64-build || true
+          sudo make build/pi64-lite.zip
           ls -la build/*
+          git remote set-url origin https://khs1994:${GITHUB_TOKEN}@github.com/khs1994/pi64
           make release
