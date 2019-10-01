@@ -9,7 +9,7 @@ release=$(date +"%Y-%m-%d")
 git tag $release
 git push origin $release
 
-github-release release --user khs1994 --repo pi64 --tag $release --draft
+github-release release --user khs1994 --repo pi64 --tag $release --draft || true
 
 for version in "lite" "desktop" ; do
     github-release upload --user khs1994 --repo pi64 --tag $release --name "pi64-$version.zip" --file "build/pi64-$version.zip" || echo "${version} release error"

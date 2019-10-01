@@ -9,10 +9,10 @@ build/pi64-desktop.zip: build/pi64-desktop.img
 	zip -9 -j build/pi64-desktop.zip build/pi64-desktop.img
 
 build/pi64-lite.img: build/linux build/userland build/firmware
-	$(go env GOPATH)/bin/pi64-build -build-dir ./build -version lite
+	pi64-build -build-dir ./build -version lite
 
 build/pi64-desktop.img: build/linux build/userland build/firmware
-	$(go env GOPATH)/bin/pi64-build -build-dir ./build -version desktop
+	pi64-build -build-dir ./build -version desktop
 
 build/linux.tar.gz.sig: build/linux.tar.gz
 	cd build && gpg2 --output linux.tar.gz.sig --detach-sign linux.tar.gz
@@ -38,3 +38,6 @@ validate:
 
 release:
 	bash make/release
+
+release/kernel: build/linux.tar.gz.sig
+	bash make/release-kernel
