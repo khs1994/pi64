@@ -37,6 +37,10 @@ jobs:
           golang.org/x/crypto/openpgp
       - run: |
           set -x
+          go version
+          go env
+          export GOPATH=$HOME/go
+          go env
           mkdir -p $GOPATH/src/github.com/bamarni/pi64  
           cp -a . $GOPATH/src/github.com/bamarni/pi64
           go install github.com/bamarni/pi64/cmd/pi64-build
