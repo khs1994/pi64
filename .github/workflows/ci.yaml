@@ -1,0 +1,16 @@
+on:
+  push
+
+name: CI
+
+jobs:
+  build:
+  - name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+        with:
+          fetch-depth: 1
+      - uses: docker-practice/actions-setup-docker@master    
+      - run: docker build -t pi64 .
+      - run: docker run -it --rm pi64 make all
