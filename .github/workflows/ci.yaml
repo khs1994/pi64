@@ -35,11 +35,11 @@ jobs:
           github.com/aktau/github-release \
           github.com/cheggaaa/pb \
           golang.org/x/crypto/openpgp
-       - run: |
-           set -x
-           mkdir -p $GOPATH/src/github.com/bamarni/pi64  
-           cp -a . $GOPATH/src/github.com/bamarni/pi64
-           go install github.com/bamarni/pi64/cmd/pi64-build
-           export PATH=$GOPATH/bin:$PATH
-           cd $GOPATH/src/github.com/bamarni/pi64
-           make all
+      - run: |
+          set -x
+          mkdir -p $GOPATH/src/github.com/bamarni/pi64  
+          cp -a . $GOPATH/src/github.com/bamarni/pi64
+          go install github.com/bamarni/pi64/cmd/pi64-build
+          export PATH=$GOPATH/bin:$PATH
+          cd $GOPATH/src/github.com/bamarni/pi64
+          make all
