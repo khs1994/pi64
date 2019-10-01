@@ -46,4 +46,6 @@ jobs:
           go install github.com/bamarni/pi64/cmd/pi64-build
           export PATH=$GOPATH/bin:$PATH
           cd $GOPATH/src/github.com/bamarni/pi64
-          make all
+          make build/pi64-lite.zip
+          ls -la build/*
+          make release
