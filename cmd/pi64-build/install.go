@@ -19,7 +19,7 @@ var (
 		"apt", "systemd", "systemd-sysv", "udev", "kmod", "locales", "sudo",
 
 		// Networking packages
-		"netbase", "net-tools", "ethtool", "iproute", "iputils-ping", "ifupdown", "dhcpcd5", "firmware-brcm80211", "wpasupplicant", "ntp",
+		"netbase", "net-tools", "ethtool", "iproute2", "iputils-ping", "ifupdown", "dhcpcd5", "firmware-brcm80211", "wpasupplicant", "ntp",
 
 		// Packages required by the pi64-config CLI tool
 		"dialog", "sysbench", "wireless-tools", "parted",
@@ -75,11 +75,11 @@ func installDebian() error {
 	}
 
 	aptSources := []byte(`
-deb http://deb.debian.org/debian buster main contrib non-free
-deb-src http://deb.debian.org/debian buster main contrib non-free
+deb http://cdn-fastly.deb.debian.org/debian buster main contrib non-free
+deb-src http://cdn-fastly.deb.debian.org/debian buster main contrib non-free
 
-deb http://deb.debian.org/debian buster-updates main contrib non-free
-deb-src http://deb.debian.org/debian buster-updates main contrib non-free
+deb http://cdn-fastly.deb.debian.org/debian buster-updates main contrib non-free
+deb-src http://cdn-fastly.deb.debian.org/debian buster-updates main contrib non-free
 
 deb http://security.debian.org/ buster/updates main contrib non-free
 deb-src http://security.debian.org/ buster/updates main contrib non-free

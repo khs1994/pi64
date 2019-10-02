@@ -18,14 +18,14 @@ func Run(options Options) error {
 
 	cmd.Stdin = strings.NewReader(`
 [General]
-noauth=true
+# noauth=true
 unpack=true
 allowrecommends=true
 debootstrap=Debian
 aptsources=Debian
 
 [Debian]
-source=http://ftp.debian.org/debian/
+source=http://cdn-fastly.deb.debian.org/debian/
 keyring=debian-archive-keyring
 components=` + strings.Join(options.Components, " ") + `
 suite=` + options.Suite + `
