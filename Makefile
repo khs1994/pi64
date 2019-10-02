@@ -39,5 +39,5 @@ validate:
 release:
 	bash make/release
 
-release/kernel: build/linux.tar.gz.sig
+release/kernel: build/linux.tar.gz
 	bash make/release-kernel

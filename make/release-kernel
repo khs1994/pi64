@@ -6,6 +6,10 @@ cd build
 
 source .env
 
+SHA256SUM=$(sha256sum linux.tar.gz | sed 's/  linux\.tar\.gz//g')
+
+echo $SHA256SUM > linux.tar.gz.sha256
+
 release=$(date +"%Y-%m-%d")-kernel-${kernelversion}
 
 git tag $release || true
@@ -14,4 +18,4 @@ git push origin $release || true
 github-release release --user ${GITHUB_USER:-khs1994} --repo pi64 --tag $release --draft || true
 
 github-release upload --user ${GITHUB_USER:-khs1994} --repo pi64 --tag $release --name "linux-${kernelversion}.tar.gz" --file "linux.tar.gz" || true
-github-release upload --user ${GITHUB_USER:-khs1994} --repo pi64 --tag $release --name "linux-${kernelversion}.tar.gz.sig" --file "linux.tar.gz.sig" || true
+github-release upload --user ${GITHUB_USER:-khs1994} --repo pi64 --tag $release --name "linux-${kernelversion}.tar.gz.sha256" --file "linux.tar.gz.sha256" || true
