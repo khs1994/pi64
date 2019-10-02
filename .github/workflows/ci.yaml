@@ -71,7 +71,7 @@ jobs:
           keyring=debian-archive-keyring
           components=main contrib non-free
           suite=buster
-          packages=apt systemd systemd-sysv udev kmod locales sudo netbase net-tools ethtool iproute2 iputils-ping ifupdown dhcpcd5 firmware-brcm80211 wpasupplicant ntp ssh avahi-daemon"> ./multistrap.config
+          packages=apt systemd systemd-sysv udev kmod locales sudo netbase net-tools ethtool iproute2 iputils-ping ifupdown dhcpcd5 firmware-brcm80211 wpasupplicant ntp dialog wireless-tools parted ca-certificates ssh avahi-daemon"> ./multistrap.config
 
           cat multistrap.config
 
