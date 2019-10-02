@@ -38,6 +38,16 @@ jobs:
           github.com/cheggaaa/pb \
           golang.org/x/crypto/openpgp
         name: Install deps
+      - name: add new pkgs
+        run: |
+          set -x
+          sudo apt install debian-archive-keyring
+          ls -la /usr/share/keyrings/
+
+          curl -fsSL -O http://mirrors.kernel.org/ubuntu/pool/universe/d/debian-archive-keyring/debian-archive-keyring_2019.1ubuntu2_all.deb
+          sudo dpkg -i debian-archive-keyring_2019.1ubuntu2_all.deb
+
+          ls -la /usr/share/keyrings/
       - run: |
           set -x
           go version
@@ -53,6 +63,41 @@ jobs:
           ls -la $HOME/go/bin || true
           sudo ln -s $HOME/go/bin/pi64-build /usr/bin || true
           cd $GOPATH/src/github.com/bamarni/pi64
+
+          echo "[General]
+          noauth=true
+          unpack=true
+          allowrecommends=true
+          debootstrap=Debian
+          aptsources=Debian
+
+          [Debian]
+          # source=http://deb.debian.org/debian/
+          source=http://ftp.debian.org/debian/
+          keyring=debian-archive-keyring
+          components=main contrib non-free
+          suite=stretch
+          packages=apt systemd systemd-sysv udev kmod locales sudo netbase net-tools ethtool iproute iputils-ping ifupdown dhcpcd5 firmware-brcm80211 wpasupplicant ntp ssh avahi-daemon"> ./multistrap.config
+          cat multistrap.config
+          mkdir -p ./build/root-lite
+          multistrap -a arm64 -d build/root-lite -f multistrap.config || sudo multistrap -a arm64 -d build/root-lite -f multistrap.config || true
+
+          echo "[General]
+          noauth=true
+          unpack=true
+          allowrecommends=true
+          debootstrap=Debian
+          aptsources=Debian
+
+          [Debian]
+          source=http://ftp.debian.org/debian/
+          keyring=debian-archive-keyring
+          components=main contrib non-free
+          suite=buster
+          packages=apt systemd systemd-sysv udev kmod locales sudo netbase net-tools ethtool iproute iputils-ping ifupdown dhcpcd5 firmware-brcm80211 wpasupplicant ntp ssh avahi-daemon"> ./multistrap.config
+          cat multistrap.config
+          mkdir -p ./build/root-lite
+          multistrap -a arm64 -d build/root-lite -f multistrap.config || sudo multistrap -a arm64 -d build/root-lite -f multistrap.config
           sudo pi64-build || true
           sudo make build/pi64-lite.zip
         name: Build
@@ -67,20 +112,20 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
         name: Release            
-  docker-build:
-    name: Docker-Build
-    runs-on: ubuntu-latest
-    env:
-      GITHUB_TOKEN: ${{ github.token }}
-    steps:
-      - uses: actions/checkout@master
-        with:
-          fetch-depth: 1
-      - uses: docker-practice/actions-setup-docker@master
-      - run: git remote set-url origin https://khs1994:${GITHUB_TOKEN}@github.com/khs1994/pi64     
-      - run: docker build -t pi64 .
-      - run: mkdir -p build
-      - run: docker run -t --rm -v $PWD/build:/go/src/github.com/bamarni/pi64/build pi64
-      - run: ls -la build/*
-      - run: docker run -t --rm -v $PWD/build:/go/src/github.com/bamarni/pi64/build -e GITHUB_TOKEN pi64 release
-      - run: docker run -t --rm -v $PWD/build:/go/src/github.com/bamarni/pi64/build -e GITHUB_TOKEN pi64 release/kernel
+  # docker-build:
+  #   name: Docker-Build
+  #   runs-on: ubuntu-latest
+  #   env:
+  #     GITHUB_TOKEN: ${{ github.token }}
+  #   steps:
+  #     - uses: actions/checkout@master
+  #       with:
+  #         fetch-depth: 1
+  #     - uses: docker-practice/actions-setup-docker@master
+  #     - run: git remote set-url origin https://khs1994:${GITHUB_TOKEN}@github.com/khs1994/pi64     
+  #     - run: docker build -t pi64 .
+  #     - run: mkdir -p build
+  #     - run: docker run -t --rm -v $PWD/build:/go/src/github.com/bamarni/pi64/build pi64
+  #     - run: ls -la build/*
+  #     - run: docker run -t --rm -v $PWD/build:/go/src/github.com/bamarni/pi64/build -e GITHUB_TOKEN pi64 release
+  #     - run: docker run -t --rm -v $PWD/build:/go/src/github.com/bamarni/pi64/build -e GITHUB_TOKEN pi64 release/kernel
