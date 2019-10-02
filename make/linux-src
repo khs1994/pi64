@@ -18,4 +18,4 @@ make -j $(nproc) ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu-
 
 kernelversion=$(make -s kernelversion)
 
-echo "kernelversion=${kernelversion}" ../.env
+echo "kernelversion=${kernelversion}" > ../.env
