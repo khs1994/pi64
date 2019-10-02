@@ -19,27 +19,29 @@ import (
 func Finish() {
 	fmt.Println(util.Logo() + "\n\n")
 	setEnv()
+	Debug("1")
 
 	fmt.Println("Mounting filesystems...")
 	checkError(mountFilesystems())
-
+    Debug("2")
 	fmt.Println("Expanding root partition...")
 	checkError(expandRootPartition())
-
+    Debug("3")
 	fmt.Println("Configuring packages (this takes a few minutes)...")
 	checkError(configurePackages())
-
+    Debug("4")
 	fmt.Println("Setting hostname...")
 	checkError(networking.SetHostname("raspberrypi"))
-
+    Debug("5")
 	if _, err := user.Lookup("pi"); err != nil {
 		fmt.Println("Adding pi user...")
 		checkError(addPiUser())
 	}
+	Debug("6")
 
 	fmt.Println("Self-removing from init...")
 	checkError(removeInit())
-
+    Debug("7")
 	if _, err := os.Stat("/boot/setup"); !os.IsNotExist(err) {
 		fmt.Println("Running setup script (/boot/setup)...")
 		if err := util.AttachCommand("/bin/bash", "/boot/setup"); err != nil {
@@ -47,11 +49,12 @@ func Finish() {
 		}
 		os.Remove("/boot/setup")
 	}
-
+    Debug("8")
 	fmt.Println("Installation succeeded! Rebooting in 5 seconds...")
 	syscall.Sync() // reboot(2) - LINUX_REBOOT_CMD_RESTART : If not preceded by a sync(2), data will be lost.
 	time.Sleep(time.Second * 5)
 	checkError(syscall.Reboot(syscall.LINUX_REBOOT_CMD_RESTART))
+	Debug("9")
 }
 
 func checkError(err error) {
@@ -124,9 +127,9 @@ func configurePackages() error {
 		return err
 	}
 
-	if err := runCommand("/var/lib/dpkg/info/dash.preinst", "install"); err != nil {
-		return err
-	}
+	// if err := runCommand("/var/lib/dpkg/info/dash.preinst", "install"); err != nil {
+	// 	return err
+	// }
 	if err := runCommand("/usr/bin/dpkg", "--configure", "-a"); err != nil {
 		return err
 	}
@@ -148,4 +151,10 @@ func removeInit() error {
 	}
 	newLine := bytes.Replace(line, []byte("init=/usr/bin/pi64-config"), nil, 1)
 	return ioutil.WriteFile(path, newLine, 0)
+}
+
+func Debug(msg string) error {
+	path := "/boot/config.txt"
+	d1 := []byte(msg)
+	return ioutil.WriteFile(path, d1, 0) //写入文件(字节数组)
 }

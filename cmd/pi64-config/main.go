@@ -27,6 +27,7 @@ var commands = map[int]string{
 }
 
 func main() {
+	setup.Debug("init")
 	if os.Getpid() == 1 {
 		setup.Finish()
 		return
