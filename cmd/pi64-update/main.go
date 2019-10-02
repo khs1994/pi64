@@ -93,7 +93,7 @@ func run() int {
 		return http.ErrUseLastResponse
 	}
 
-	latestReleaseResp, err := client.Get("https://github.com/bamarni/pi64-kernel/releases/latest")
+	latestReleaseResp, err := client.Get("https://github.com/khs1994/pi64/releases/latest")
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "Couldn't request for latest release : "+err.Error())
 		return 1
@@ -123,7 +123,7 @@ func run() int {
 		return 0
 	}
 
-	releaseEndpoint := "https://github.com/bamarni/pi64-kernel/releases/download/" + latestVersion
+	releaseEndpoint := "https://github.com/khs1994/pi64-kernel/releases/download/" + latestVersion
 
 	fmt.Fprintf(os.Stderr, "Downloading '%s' release.\n", latestRelease)
 
