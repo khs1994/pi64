@@ -32,7 +32,7 @@ jobs:
           dosfstools \
           kpartx \
           rsync \
-          flex bison libssl-dev \
+          flex bison libssl-dev gnupg2 \
           && go get \
           github.com/aktau/github-release \
           github.com/cheggaaa/pb \
