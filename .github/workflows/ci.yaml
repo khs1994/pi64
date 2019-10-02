@@ -52,6 +52,8 @@ jobs:
           go install github.com/bamarni/pi64/cmd/pi64-build
           ls -la $HOME/go/bin || true
           sudo ln -s $HOME/go/bin/pi64-build /usr/bin || true
+          sudo pi64-build || true
+          sudo rm -rf build
       - run: |
           export GOPATH=$HOME/go
           export PATH=$GOPATH/bin:$PATH
@@ -70,9 +72,9 @@ jobs:
           components=main contrib non-free
           suite=buster
           packages=apt systemd systemd-sysv udev kmod locales sudo netbase net-tools ethtool iproute2 iputils-ping ifupdown dhcpcd5 firmware-brcm80211 wpasupplicant ntp ssh avahi-daemon"> ./multistrap.config
-          
+
           cat multistrap.config
-          
+
           mkdir -p ./build/root-lite
           multistrap -a arm64 -d build/root-lite -f multistrap.config || sudo multistrap -a arm64 -d build/root-lite -f multistrap.config
 
@@ -83,34 +85,39 @@ jobs:
           export PATH=$GOPATH/bin:$PATH
           cd $(go env GOPATH)/src/github.com/bamarni/pi64
 
-          sudo pi64-build || true
-          sudo make build/pi64-lite.zip
+          sudo make build/pi64-lite.zip || ls -laR build/root-lite/etc/apt/
+          ls -la build
         name: Build
       - run: |
           export GOPATH=$HOME/go
           export PATH=$GOPATH/bin:$PATH    
           test -n "$GITHUB_TOKEN" && echo 0 || echo 1
-          ls -la build
-          git remote set-url origin https://khs1994:${GITHUB_TOKEN}@github.com/khs1994/pi64
+          git remote set-url origin https://${GITHUB_USER:-khs1994}:${GITHUB_TOKEN:?must set}@github.com/${GITHUB_USER:-khs1994}/pi64
           make release
           make release/kernel
         env:
           GITHUB_TOKEN: ${{ github.token }}
-        name: Release            
+          GITHUB_USER: khs1994
+        name: Release   
+        if: github.event_name == 'push'
   # docker-build:
   #   name: Docker-Build
   #   runs-on: ubuntu-latest
+  #   if: github.event_name == 'push' 
   #   env:
   #     GITHUB_TOKEN: ${{ github.token }}
+  #     GITHUB_USER: khs1994
   #   steps:
   #     - uses: actions/checkout@master
   #       with:
   #         fetch-depth: 1
   #     - uses: docker-practice/actions-setup-docker@master
-  #     - run: git remote set-url origin https://khs1994:${GITHUB_TOKEN}@github.com/khs1994/pi64     
+  #     - run: git remote set-url origin https://${GITHUB_USER:-khs1994}:${GITHUB_TOKEN:?must set}@github.com/${GITHUB_USER:-khs1994}/pi64     
   #     - run: docker build -t pi64 .
   #     - run: mkdir -p build
   #     - run: docker run -t --rm -v $PWD/build:/go/src/github.com/bamarni/pi64/build pi64
   #     - run: ls -la build/*
   #     - run: docker run -t --rm -v $PWD/build:/go/src/github.com/bamarni/pi64/build -e GITHUB_TOKEN pi64 release
+  #       if: github.event_name == 'push'
   #     - run: docker run -t --rm -v $PWD/build:/go/src/github.com/bamarni/pi64/build -e GITHUB_TOKEN pi64 release/kernel
+  #       if: github.event_name == 'push'

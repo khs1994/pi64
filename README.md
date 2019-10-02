@@ -2,6 +2,10 @@
 
 pi64 is an experimental 64-bit OS for the Raspberry Pi 3. It is based on Debian Stretch and backed by a 5.3 Linux kernel.
 
+## Compare upstream
+
+* https://github.com/bamarni/pi64/compare/master...khs1994:buster
+
 ## Releases
 
 The latest images are always available in the [releases](https://github.com/bamarni/pi64/releases) section.

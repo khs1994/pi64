@@ -11,7 +11,7 @@ release=$(date +"%Y-%m-%d")-kernel-${kernelversion}
 git tag $release
 git push origin $release
 
-github-release release --user khs1994 --repo pi64 --tag $release --draft || true
+github-release release --user ${GITHUB_USER:-khs1994} --repo pi64 --tag $release --draft || true
 
-github-release upload --user khs1994 --repo pi64 --tag $release --name "linux-${kernelversion}.tar.gz" --file "linux.tar.gz" || true
-github-release upload --user khs1994 --repo pi64 --tag $release --name "linux-${kernelversion}.tar.gz.sig" --file "linux.tar.gz.sig" || true
+github-release upload --user ${GITHUB_USER:-khs1994} --repo pi64 --tag $release --name "linux-${kernelversion}.tar.gz" --file "linux.tar.gz" || true
+github-release upload --user ${GITHUB_USER:-khs1994} --repo pi64 --tag $release --name "linux-${kernelversion}.tar.gz.sig" --file "linux.tar.gz.sig" || true
