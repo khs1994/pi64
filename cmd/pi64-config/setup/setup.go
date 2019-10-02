@@ -26,7 +26,11 @@ func Finish() {
     Debug("2")
 	fmt.Println("Expanding root partition...")
 	checkError(expandRootPartition())
-    Debug("3")
+	Debug("3")
+
+    fmt.Println("Configuring kernel modules...")
+	checkError(configureModules())
+
 	fmt.Println("Configuring packages (this takes a few minutes)...")
 	checkError(configurePackages())
     Debug("4")
@@ -127,6 +131,8 @@ func configurePackages() error {
 		return err
 	}
 
+	// buster removed /var/lib/dpkg/info/dash.preinst
+	// https://salsa.debian.org/debian/dash/commit/020393f77a74ded57ee1bc3f1389ea0833dc5b09
 	// if err := runCommand("/var/lib/dpkg/info/dash.preinst", "install"); err != nil {
 	// 	return err
 	// }
@@ -157,4 +163,8 @@ func Debug(msg string) error {
 	path := "/boot/config.txt"
 	d1 := []byte(msg)
 	return ioutil.WriteFile(path, d1, 0) //写入文件(字节数组)
+}
+
+func configureModules() error {
+	return runCommand("/sbin/depmod", "-a")
 }
