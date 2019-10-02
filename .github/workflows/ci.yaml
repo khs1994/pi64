@@ -13,7 +13,6 @@ jobs:
         with:
           fetch-depth: 1
       - uses: docker-practice/actions-setup-docker@master
-      - run: echo 1 > /dev/stdin
       - run: |
           set -x
           sudo apt-get update \
@@ -53,7 +52,10 @@ jobs:
           go install github.com/bamarni/pi64/cmd/pi64-build
           ls -la $HOME/go/bin || true
           sudo ln -s $HOME/go/bin/pi64-build /usr/bin || true
-          cd $GOPATH/src/github.com/bamarni/pi64
+      - run: |
+          export GOPATH=$HOME/go
+          export PATH=$GOPATH/bin:$PATH
+          cd $(go env GOPATH)/src/github.com/bamarni/pi64
 
           echo "[General]
           # noauth=true
@@ -74,7 +76,13 @@ jobs:
           mkdir -p ./build/root-lite
           multistrap -a arm64 -d build/root-lite -f multistrap.config || sudo multistrap -a arm64 -d build/root-lite -f multistrap.config
 
-          sudo rm -rf build 
+          sudo rm -rf build
+        name: Test cli  
+      - run: |
+          export GOPATH=$HOME/go
+          export PATH=$GOPATH/bin:$PATH
+          cd $(go env GOPATH)/src/github.com/bamarni/pi64
+
           sudo pi64-build || true
           sudo make build/pi64-lite.zip
         name: Build
