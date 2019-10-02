@@ -38,16 +38,6 @@ jobs:
           github.com/cheggaaa/pb \
           golang.org/x/crypto/openpgp
         name: Install deps
-      - name: add new pkgs
-        run: |
-          set -x
-          sudo apt install debian-archive-keyring
-          ls -la /usr/share/keyrings/
-
-          curl -fsSL -O http://mirrors.kernel.org/ubuntu/pool/universe/d/debian-archive-keyring/debian-archive-keyring_2019.1ubuntu2_all.deb
-          sudo dpkg -i debian-archive-keyring_2019.1ubuntu2_all.deb
-
-          ls -la /usr/share/keyrings/
       - run: |
           set -x
           go version
@@ -64,6 +54,8 @@ jobs:
           sudo ln -s $HOME/go/bin/pi64-build /usr/bin || true
           cd $GOPATH/src/github.com/bamarni/pi64
 
+          ls -la /usr/share/keyrings/
+
           echo "[General]
           noauth=true
           unpack=true
@@ -72,8 +64,8 @@ jobs:
           aptsources=Debian
 
           [Debian]
-          # source=http://deb.debian.org/debian/
-          source=http://ftp.debian.org/debian/
+          source=http://deb.debian.org/debian/
+          # source=http://ftp.debian.org/debian/
           keyring=debian-archive-keyring
           components=main contrib non-free
           suite=stretch
@@ -82,6 +74,14 @@ jobs:
           mkdir -p ./build/root-lite
           multistrap -a arm64 -d build/root-lite -f multistrap.config || sudo multistrap -a arm64 -d build/root-lite -f multistrap.config || true
 
+          sudo apt install debian-archive-keyring
+          ls -la /usr/share/keyrings/
+
+          curl -fsSL -O http://mirrors.kernel.org/ubuntu/pool/universe/d/debian-archive-keyring/debian-archive-keyring_2019.1ubuntu2_all.deb
+          sudo dpkg -i debian-archive-keyring_2019.1ubuntu2_all.deb
+
+          ls -la /usr/share/keyrings/
+
           echo "[General]
           noauth=true
           unpack=true
@@ -90,7 +90,7 @@ jobs:
           aptsources=Debian
 
           [Debian]
-          source=http://ftp.debian.org/debian/
+          source=cdn-fastly.deb.debian.org/debian
           keyring=debian-archive-keyring
           components=main contrib non-free
           suite=buster
