@@ -1,0 +1,15 @@
+language: bash
+
+dist: bionic # 18.04
+
+services:
+- docker
+
+script:
+- git remote set-url origin https://khs1994:${GITHUB_TOKEN}@github.com/khs1994/pi64
+- docker build -t pi64 .
+- mkdir -p build
+- docker run -it --rm -v $PWD/build:/go/src/github.com/bamarni/pi64/build pi64
+- ls -la build/*
+- docker run -it --rm -v $PWD/build:/go/src/github.com/bamarni/pi64/build -e GITHUB_TOKEN pi64 release
+- docker run -it --rm -v $PWD/build:/go/src/github.com/bamarni/pi64/build -e GITHUB_TOKEN pi64 release/kernel
