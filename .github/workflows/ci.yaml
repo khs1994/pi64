@@ -12,6 +12,7 @@ jobs:
         with:
           fetch-depth: 1
       - uses: docker-practice/actions-setup-docker@master
+      - run: echo 1 > /dev/stdin
       - run: |
           set -x
           sudo apt-get update \
@@ -69,21 +70,17 @@ jobs:
   docker-build:
     name: Docker-Build
     runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ github.token }}
     steps:
       - uses: actions/checkout@master
         with:
           fetch-depth: 1
       - uses: docker-practice/actions-setup-docker@master
-      - run: git remote set-url origin https://khs1994:${GITHUB_TOKEN}@github.com/khs1994/pi64
-        env:
-          GITHUB_TOKEN: ${{ github.token }}      
+      - run: git remote set-url origin https://khs1994:${GITHUB_TOKEN}@github.com/khs1994/pi64     
       - run: docker build -t pi64 .
       - run: mkdir -p build
       - run: docker run -t --rm -v $PWD/build:/go/src/github.com/bamarni/pi64/build pi64
       - run: ls -la build/*
       - run: docker run -t --rm -v $PWD/build:/go/src/github.com/bamarni/pi64/build -e GITHUB_TOKEN pi64 release
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
       - run: docker run -t --rm -v $PWD/build:/go/src/github.com/bamarni/pi64/build -e GITHUB_TOKEN pi64 release/kernel
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
