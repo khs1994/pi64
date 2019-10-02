@@ -56,7 +56,7 @@ jobs:
           cd $GOPATH/src/github.com/bamarni/pi64
 
           echo "[General]
-          noauth=true
+          # noauth=true
           unpack=true
           allowrecommends=true
           debootstrap=Debian
