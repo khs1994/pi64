@@ -54,6 +54,7 @@ jobs:
           sudo ln -s $HOME/go/bin/pi64-build /usr/bin || true
           sudo pi64-build || true
           sudo rm -rf build
+        name: Setup Env
       - run: |
           export GOPATH=$HOME/go
           export PATH=$GOPATH/bin:$PATH

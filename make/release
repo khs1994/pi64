@@ -6,8 +6,8 @@ cd build
 
 release=$(date +"%Y-%m-%d")
 
-git tag $release
-git push origin $release
+git tag $release || true
+git push origin $release || true
 
 github-release release --user ${GITHUB_USER:-khs1994} --repo pi64 --tag $release --draft || true
 
