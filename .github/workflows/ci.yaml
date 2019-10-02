@@ -6,7 +6,7 @@ name: CI
 
 jobs:
   build:
-    name: Build
+    name: Build-Dist-Buster
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
@@ -81,17 +81,28 @@ jobs:
           sudo rm -rf build
         name: Test cli
       - run: |
+          set -x
           export GOPATH=$HOME/go
           export PATH=$GOPATH/bin:$PATH
           cd $(go env GOPATH)/src/github.com/bamarni/pi64
 
           sudo make build/pi64-lite.zip
-          ls -la build
         name: Build
       - run: |
+          set -x
           export GOPATH=$HOME/go
           export PATH=$GOPATH/bin:$PATH
           cd $(go env GOPATH)/src/github.com/bamarni/pi64
+
+          ls -la build
+        name: Show Build Dir
+      - run: |
+          set -x
+          export GOPATH=$HOME/go
+          export PATH=$GOPATH/bin:$PATH
+          cd $(go env GOPATH)/src/github.com/bamarni/pi64
+
+          sudo chown `id -u`:`id -g` build
 
           test -n "$GITHUB_TOKEN" && echo 0 || echo 1
           git remote set-url origin https://${GITHUB_USER:-khs1994}:${GITHUB_TOKEN:?must set}@github.com/${GITHUB_USER:-khs1994}/pi64
@@ -103,7 +114,7 @@ jobs:
         name: Release
         if: github.event_name == 'push'
   # docker-build:
-  #   name: Docker-Build
+  #   name: Docker-Build-Dist-Buster
   #   runs-on: ubuntu-latest
   #   if: github.event_name == 'push'
   #   env:

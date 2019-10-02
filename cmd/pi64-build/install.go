@@ -82,8 +82,8 @@ deb-src http://cdn-fastly.deb.debian.org/debian buster main contrib non-free
 deb http://cdn-fastly.deb.debian.org/debian buster-updates main contrib non-free
 deb-src http://cdn-fastly.deb.debian.org/debian buster-updates main contrib non-free
 
-deb http://security.debian.org/ buster/updates main contrib non-free
-deb-src http://security.debian.org/ buster/updates main contrib non-free
+deb http://cdn-fastly.deb.debian.org/debian-security buster/updates main contrib non-free
+deb-src http://cdn-fastly.deb.debian.org/debian-security buster/updates main contrib non-free
 `)
 
 	if err := ioutil.WriteFile("/etc/apt/sources.list", aptSources[1:], 0644); err != nil {
