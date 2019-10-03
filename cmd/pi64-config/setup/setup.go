@@ -30,7 +30,7 @@ func Finish() {
 
     fmt.Println("Configuring kernel modules...")
 	checkError(configureModules())
-
+    Debug("3-1")
 	fmt.Println("Configuring packages (this takes a few minutes)...")
 	checkError(configurePackages())
     Debug("4")
@@ -64,6 +64,7 @@ func Finish() {
 func checkError(err error) {
 	if err != nil {
 		fmt.Println(err)
+		Debug(fmt.Sprintf("%s", err))
 		sig := make(chan os.Signal)
 		signal.Notify(sig, syscall.SIGINT)
 		for {
@@ -160,7 +161,7 @@ func removeInit() error {
 }
 
 func Debug(msg string) error {
-	path := "/boot/config.txt"
+	path := "/boot/COPYING.linux"
 	d1 := []byte(msg)
 	return ioutil.WriteFile(path, d1, 0) //写入文件(字节数组)
 }
