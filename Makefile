@@ -43,4 +43,4 @@ release/kernel: build/linux.tar.gz
 	bash make/release-kernel
 
 test:
-    bash make/test
+	bash make/test
