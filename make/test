@@ -20,4 +20,4 @@ cat multistrap.config
 
 mkdir -p ./build/root-lite
 multistrap -a arm64 -d build/root-lite -f multistrap.config
-sudo rm -rf build
+rm -rf build

@@ -9,6 +9,7 @@ build/pi64-desktop.zip: build/pi64-desktop.img
 	zip -9 -j build/pi64-desktop.zip build/pi64-desktop.img
 
 build/pi64-lite.img: build/linux build/userland build/firmware
+	apt update || sudo apt update || true
 	pi64-build -build-dir ./build -version lite
 
 build/pi64-desktop.img: build/linux build/userland build/firmware
