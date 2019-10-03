@@ -9,3 +9,5 @@ git clone --depth=1 https://github.com/raspberrypi/firmware
 cd firmware/boot
 
 rm {*.dtb,*.img}
+
+touch pi64-config-debug.txt

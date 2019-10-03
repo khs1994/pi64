@@ -115,24 +115,24 @@ jobs:
           GITHUB_USER: khs1994
         name: Release
         if: github.event_name == 'push'
-  # docker-build:
-  #   name: Docker-Build-Dist-Buster
-  #   runs-on: ubuntu-latest
-  #   if: github.event_name == 'push'
-  #   env:
-  #     GITHUB_TOKEN: ${{ github.token }}
-  #     GITHUB_USER: khs1994
-  #   steps:
-  #     - uses: actions/checkout@master
-  #       with:
-  #         fetch-depth: 1
-  #     - uses: docker-practice/actions-setup-docker@master
-  #     - run: git remote set-url origin https://${GITHUB_USER:-khs1994}:${GITHUB_TOKEN:?must set}@github.com/${GITHUB_USER:-khs1994}/pi64
-  #     - run: docker build -t pi64 .
-  #     - run: mkdir -p build
-  #     - run: docker run -t --rm -v $PWD/build:/go/src/github.com/bamarni/pi64/build pi64
-  #     - run: ls -la build/*
-  #     - run: docker run -t --rm -v $PWD/build:/go/src/github.com/bamarni/pi64/build -e GITHUB_TOKEN pi64 release
-  #       if: github.event_name == 'push'
-  #     - run: docker run -t --rm -v $PWD/build:/go/src/github.com/bamarni/pi64/build -e GITHUB_TOKEN pi64 release/kernel
-  #       if: github.event_name == 'push'
+  docker-build:
+    name: Docker-Build-Dist-Buster
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+    env:
+      GITHUB_TOKEN: ${{ github.token }}
+      GITHUB_USER: khs1994
+    steps:
+      - uses: actions/checkout@master
+        with:
+          fetch-depth: 1
+      - uses: docker-practice/actions-setup-docker@master
+      - run: git remote set-url origin https://${GITHUB_USER:-khs1994}:${GITHUB_TOKEN:?must set}@github.com/${GITHUB_USER:-khs1994}/pi64
+      - run: docker build -t pi64 .
+      - run: mkdir -p build
+      - run: docker run -t --privileged --rm -e GITHUB_USER -v $PWD/build:/go/src/github.com/bamarni/pi64/build pi64
+      - run: ls -la build/*
+      - run: docker run -t --rm -v $PWD/build:/go/src/github.com/bamarni/pi64/build -e GITHUB_TOKEN -e GITHUB_USER pi64 release
+        if: github.event_name == 'push'
+      - run: docker run -t --rm -v $PWD/build:/go/src/github.com/bamarni/pi64/build -e GITHUB_TOKEN -e GITHUB_USER pi64 release/kernel
+        if: github.event_name == 'push'
