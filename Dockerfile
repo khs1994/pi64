@@ -33,7 +33,3 @@ WORKDIR $GOPATH/src/github.com/bamarni/pi64
 COPY . $GOPATH/src/github.com/bamarni/pi64
 
 RUN go install github.com/bamarni/pi64/cmd/pi64-build
-
-ENTRYPOINT make
-
-CMD "build/pi64-lite.zip"

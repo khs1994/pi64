@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 set -x
+
 echo "[General]
 # noauth=true
 unpack=true
@@ -18,5 +19,5 @@ packages=apt systemd systemd-sysv udev kmod locales sudo netbase net-tools ethto
 cat multistrap.config
 
 mkdir -p ./build/root-lite
-multistrap -a arm64 -d build/root-lite -f multistrap.config || sudo multistrap -a arm64 -d build/root-lite -f multistrap.config
+multistrap -a arm64 -d build/root-lite -f multistrap.config
 sudo rm -rf build
