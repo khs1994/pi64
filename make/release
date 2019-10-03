@@ -4,7 +4,7 @@ set -ex
 
 cd build
 
-release=$(date +"%Y-%m-%d")
+release=$(date +"%Y-%m-%d.%s")
 
 git tag $release || true
 git push origin $release || true

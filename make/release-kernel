@@ -10,7 +10,7 @@ SHA256SUM=$(sha256sum linux.tar.gz | sed 's/  linux\.tar\.gz//g')
 
 echo $SHA256SUM > linux.tar.gz.sha256
 
-release=$(date +"%Y-%m-%d")-kernel-${kernelversion}
+release=$(date +"%Y-%m-%d.%s")-kernel-${kernelversion}
 
 git tag $release || true
 git push origin $release || true
