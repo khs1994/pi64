@@ -13,6 +13,7 @@ build/pi64-lite.img: build/linux build/userland build/firmware
 	pi64-build -build-dir ./build -version lite
 
 build/pi64-desktop.img: build/linux build/userland build/firmware
+	apt update || sudo apt update || true
 	pi64-build -build-dir ./build -version desktop
 
 build/linux.tar.gz.sig: build/linux.tar.gz
@@ -44,4 +45,5 @@ release/kernel: build/linux.tar.gz
 	bash make/release-kernel
 
 test:
+	apt update || sudo apt update || true
 	bash make/test
