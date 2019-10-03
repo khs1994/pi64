@@ -130,6 +130,7 @@ jobs:
       - run: git remote set-url origin https://${GITHUB_USER:-khs1994}:${GITHUB_TOKEN:?must set}@github.com/${GITHUB_USER:-khs1994}/pi64
       - run: docker build -t pi64 .
       - run: mkdir -p build
+      - run: docker run -t --privileged --rm -e GITHUB_USER -v $PWD/build:/go/src/github.com/bamarni/pi64/build pi64 test
       - run: docker run -t --privileged --rm -e GITHUB_USER -v $PWD/build:/go/src/github.com/bamarni/pi64/build pi64
       - run: ls -la build/*
       - run: docker run -t --rm -v $PWD/build:/go/src/github.com/bamarni/pi64/build -e GITHUB_TOKEN -e GITHUB_USER pi64 release

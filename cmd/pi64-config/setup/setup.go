@@ -6,7 +6,6 @@ import (
 	"io/ioutil"
 	"os"
 	"os/exec"
-	"os/signal"
 	"os/user"
 	"strings"
 	"syscall"
@@ -62,13 +61,13 @@ func checkError(err error) {
 	if err != nil {
 		fmt.Println(err)
 		Debug(fmt.Sprintf("%s", err))
-		sig := make(chan os.Signal)
-		signal.Notify(sig, syscall.SIGINT)
-		for {
-			select {
-			case <-sig:
-			}
-		}
+		// sig := make(chan os.Signal)
+		// signal.Notify(sig, syscall.SIGINT)
+		// for {
+		// 	select {
+		// 	case <-sig:
+		// 	}
+		// }
 	}
 }
 

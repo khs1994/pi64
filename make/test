@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+set -x
+echo "[General]
+# noauth=true
+unpack=true
+allowrecommends=true
+debootstrap=Debian
+aptsources=Debian
+
+[Debian]
+source=http://cdn-fastly.deb.debian.org/debian
+keyring=debian-archive-keyring
+components=main contrib non-free
+suite=buster
+packages=apt systemd systemd-sysv udev kmod locales sudo netbase net-tools ethtool iproute2 iputils-ping ifupdown isc-dhcp-client firmware-brcm80211 wpasupplicant ntp dialog wireless-tools parted ca-certificates ssh avahi-daemon"> ./multistrap.config
+
+cat multistrap.config
+
+mkdir -p ./build/root-lite
+multistrap -a arm64 -d build/root-lite -f multistrap.config || sudo multistrap -a arm64 -d build/root-lite -f multistrap.config
+sudo rm -rf build
