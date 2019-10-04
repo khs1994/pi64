@@ -12,7 +12,16 @@ cd linux-src
 
 make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- bcmrpi3_defconfig # olddefconfig
 
-diff ../../make/kernel-config.txt ./.config || true
+echo "
+CONFIG_MEMCG=y
+CONFIG_BLK_CGROUP=y
+CONFIG_CGROUP_PIDS=y
+CONFIG_CGROUP_PERF=y
+CONFIG_CGROUP_NET_PRIO=y
+CONFIG_CFS_BANDWIDTH=y
+" | tee -a .config
+
+make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- olddefconfig
 
 make -j $(nproc) ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu-
 

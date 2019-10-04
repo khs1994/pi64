@@ -134,6 +134,7 @@ func configurePackages() error {
 	// 	return err
 	// }
 	if err := runCommand("/usr/bin/dpkg", "--configure", "-a"); err != nil {
+		return os.Remove(policyPath)
 		return err
 	}
 	return os.Remove(policyPath)

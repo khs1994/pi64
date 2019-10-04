@@ -103,6 +103,14 @@ jobs:
 
           ls -la build
         name: Show Build Dir
+      - name: Check linux kernel config
+        run: |
+          set -x
+          cd $(go env GOPATH)/src/github.com/bamarni/pi64
+          cd build
+          source .env
+          curl https://raw.githubusercontent.com/docker/docker/master/contrib/check-config.sh \
+              | CONFIG=linux/usr/src/linux-headers-${kernelversion}-v8+/.config bash
       - run: |
           set -x
           export GOPATH=$HOME/go
