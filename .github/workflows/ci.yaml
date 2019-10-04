@@ -110,7 +110,7 @@ jobs:
           cd build
           source .env
           curl https://raw.githubusercontent.com/docker/docker/master/contrib/check-config.sh \
-              | CONFIG=linux/usr/src/linux-headers-${kernelversion}-v8+/.config bash
+              | CONFIG=linux/usr/src/linux-headers-${kernelversion}-v8+/.config bash || true
       - run: |
           set -x
           export GOPATH=$HOME/go
