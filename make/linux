@@ -2,7 +2,9 @@
 
 set -ex
 
-if [ -d build/linux/usr/src ];then exit 0; fi
+source .env
+
+if [ -n "$skip_build_kernel" ];then exit 0; fi
 
 cd build/linux-src
 

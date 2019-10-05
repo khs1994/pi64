@@ -96,9 +96,10 @@ jobs:
 
           mkdir -p build/linux
 
-          echo "kernelversion=5.3.0" > build/.env
+          echo "kernelversion=5.3.3" > build/.env
+          echo "skip_build_kernel=1" > .env
           source build/.env
-          release="2019-10-04.1570185382"
+          release="2019-10-05.1570251250"
 
           curl -fsSL https://github.com/khs1994/pi64/releases/download/${release}-kernel-${kernelversion}/linux-${kernelversion}.tar.gz \
             | tar -zxvf - -C build/linux
@@ -142,6 +143,7 @@ jobs:
     runs-on: ubuntu-latest
     if: |
       github.event_name == 'push' &&
+      contains( github.event.head_commit.message, '[docker build]') &&
       ! (contains( github.event.head_commit.message, '[skip ci]')
       || contains( github.event.head_commit.message, '[skip action]')
       || contains( github.event.head_commit.message, '[ci skip]')
@@ -159,15 +161,15 @@ jobs:
       - run: mkdir -p build/linux
       - run: |
           set -x
-          echo "kernelversion=5.3.0" > build/.env
+          echo "kernelversion=5.3.3" > build/.env
+          echo "skip_build_kernel=1" > .env
           source build/.env
-          release="2019-10-04.1570185382"
+          release="2019-10-05.1570251250"
 
           curl -fsSL https://github.com/khs1994/pi64/releases/download/${release}-kernel-${kernelversion}/linux-${kernelversion}.tar.gz \
             | tar -zxvf - -C build/linux
       - run: ls -la build
-      - run: rm -rf .dockerignore
-      - run: docker run -t --privileged --rm -v $PWD:/go/src/github.com/bamarni/pi64 pi64 ls -la build/*
+      - run: docker run -t --privileged --rm -v $PWD:/go/src/github.com/bamarni/pi64 pi64 ls -la build/linux/usr/src
       - run: docker run -t --privileged --rm -e GITHUB_USER -v $PWD:/go/src/github.com/bamarni/pi64 pi64 make test
       - run: docker run -t --privileged --rm -e GITHUB_USER -v $PWD:/go/src/github.com/bamarni/pi64 pi64 make build/pi64-lite.zip
       - run: ls -la build/*

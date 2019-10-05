@@ -2,9 +2,11 @@
 
 set -ex
 
-mkdir -p build && cd build
+source .env
 
-if [ -d linux/opt ];then exit 0; fi
+if [ -n "$skip_build_kernel" ];then exit 0; fi
+
+mkdir -p build && cd build
 
 git clone --depth=1 https://github.com/raspberrypi/userland
 

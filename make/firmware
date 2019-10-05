@@ -2,9 +2,11 @@
 
 set -ex
 
-cd build
+source .env
 
-if [ -d linux/boot ];then exit 0; fi
+if [ -n "$skip_build_kernel" ];then exit 0; fi
+
+cd build
 
 git clone --depth=1 https://github.com/raspberrypi/firmware
 
