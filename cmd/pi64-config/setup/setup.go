@@ -131,6 +131,13 @@ func configurePackages() error {
 
 	// buster removed /var/lib/dpkg/info/dash.preinst
 	// https://salsa.debian.org/debian/dash/commit/020393f77a74ded57ee1bc3f1389ea0833dc5b09
+
+    // buster
+    // try fix error:
+    // Setting up base-files (10.3+deb10u1) ...
+    // chown: invalid user: 'root:root'
+    // dpkg: error processing package base-files (--configure):
+    // installed base-files package post-installation script subprocess returned error exit status 1
 	if err := runCommand("/var/lib/dpkg/info/base-passwd.preinst", "install"); err != nil {
 		return err
 	}
