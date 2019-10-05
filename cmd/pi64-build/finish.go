@@ -29,7 +29,8 @@ source ../.env
 ls -la
 
 if [ -n "$skip_build_kernel" ];then
-  tar -zxvf linux.tar.gz -C root-$version
+  curl -fsSL https://github.com/khs1994/pi64/releases/download/${release}-kernel-${kernelversion}/linux-${kernelversion}.tar.gz \
+      | tar -zxvf - -C root-$version
 else
   rsync -a linux/ root-$version/
 fi
