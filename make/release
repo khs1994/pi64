@@ -4,8 +4,8 @@ set -ex
 
 cd build
 
-release=$(date +"%Y-%m-%d.%s")
 dist=buster
+release=$(date +"%Y-%m-%d.%s")-${dist}
 
 git tag $release || true
 git push origin $release || true
