@@ -66,6 +66,7 @@ jobs:
           export PATH=$GOPATH/bin:$PATH
           cd $(go env GOPATH)/src/github.com/bamarni/pi64
 
+          deb_packages=$(pi64-build -deb_packages -version lite)
           echo "[General]
           # noauth=true
           unpack=true
@@ -78,7 +79,7 @@ jobs:
           keyring=debian-archive-keyring
           components=main contrib non-free
           suite=buster
-          packages=apt systemd systemd-sysv udev kmod locales sudo netbase net-tools ethtool iproute2 iputils-ping ifupdown isc-dhcp-client firmware-brcm80211 wpasupplicant ntp dialog wireless-tools parted ca-certificates ssh avahi-daemon"> ./multistrap.config
+          packages=${deb_packages}"> ./multistrap.config
 
           cat multistrap.config
 
@@ -148,6 +149,7 @@ jobs:
       - run: git remote set-url origin https://${GITHUB_USER:-khs1994}:${GITHUB_TOKEN:?must set}@github.com/${GITHUB_USER:-khs1994}/pi64
       - run: docker build -t pi64 .
       - run: mkdir -p build
+      - run: docker run -t --privileged --rm pi64 ls -la
       - run: docker run -t --privileged --rm -e GITHUB_USER -v $PWD/build:/go/src/github.com/bamarni/pi64/build pi64 make test
       - run: docker run -t --privileged --rm -e GITHUB_USER -v $PWD/build:/go/src/github.com/bamarni/pi64/build pi64 make build/pi64-lite.zip
       - run: ls -la build/*

@@ -6,6 +6,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strings"
 
 	"github.com/bamarni/pi64/pkg/diskutil"
 )
@@ -24,17 +25,26 @@ var (
 	bootDir  string
 	version  string
 	debug    bool
+	deb_packages bool
 )
 
 func main() {
 	flag.StringVar(&buildDir, "build-dir", "", "Build directory")
 	flag.StringVar(&version, "version", Lite, "pi64 version ('lite' or 'desktop')")
 	flag.BoolVar(&debug, "debug", false, "Create a debug image")
+	flag.BoolVar(&deb_packages,"deb_packages",false,"Print deb packages and exit")
 	flag.Parse()
 
 	if version != Lite && version != Desktop {
 		fmt.Fprintln(os.Stderr, "Unsupported version "+version)
 		os.Exit(1)
+	}
+
+	// list deb package only
+	if deb_packages {
+		fmt.Fprintln(os.Stdout,strings.Join(Package_list(version), " "))
+
+		return
 	}
 
 	fmt.Fprintln(os.Stderr, "Creating build directory...")

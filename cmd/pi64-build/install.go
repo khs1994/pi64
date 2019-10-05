@@ -33,9 +33,7 @@ var (
 	debugPackages   = []string{"device-tree-compiler", "strace", "vim", "less"}
 )
 
-func installDebian() error {
-	fmt.Fprintln(os.Stderr, "   Running multistrap...")
-
+func Package_list(version string) []string {
 	packages := packages
 	if version == Lite {
 		packages = append(packages, litePackages...)
@@ -45,6 +43,15 @@ func installDebian() error {
 	if debug {
 		packages = append(packages, debugPackages...)
 	}
+
+	return packages;
+}
+
+func installDebian() error {
+	fmt.Fprintln(os.Stderr, "   Running multistrap...")
+
+	packages := Package_list(version)
+
 	multistrapOpts := multistrap.Options{
 		Directory:  rootDir,
 		Arch:       "arm64",
