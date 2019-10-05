@@ -26,8 +26,8 @@ jobs:
       - run: sudo mkdir -p build/linux
       - run: |
           set -x
-          echo "kernelversion=5.3.3" > build/.env
-          echo "skip_build_kernel=1" > .env
+          echo "kernelversion=5.3.3" | sudo tee build/.env
+          echo "skip_build_kernel=1" | sudo tee .env
           source build/.env
           release="2019-10-05.1570277623"
 
