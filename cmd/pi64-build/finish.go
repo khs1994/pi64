@@ -24,16 +24,7 @@ root_devmap=$2
 
 rm -rf root-$version/var/lib/apt/lists/* root-$version/etc/apt/sources.list.d/*
 
-source ../.env
-
-ls -la
-
-if [ -n "$skip_build_kernel" ];then
-  curl -fsSL https://github.com/khs1994/pi64/releases/download/${release}-kernel-${kernelversion}/linux-${kernelversion}.tar.gz \
-      | tar -zxvf - -C root-$version
-else
-  rsync -a linux/ root-$version/
-fi
+rsync -a linux/ root-$version/
 
 # https://github.com/RPi-Distro/repo/issues/51
 mkdir -p root-$version/lib/firmware/brcm
