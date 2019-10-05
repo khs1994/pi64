@@ -2,6 +2,8 @@
 
 set -ex
 
+if [ -d build/linux/usr/src ];then exit 0; fi
+
 cd build/linux-src
 
 mkdir -p ../linux/boot ../linux/usr/bin ../linux/opt

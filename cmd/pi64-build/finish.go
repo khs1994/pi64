@@ -24,7 +24,7 @@ root_devmap=$2
 
 rm -rf root-$version/var/lib/apt/lists/* root-$version/etc/apt/sources.list.d/*
 
-rsync -a linux/ root-$version/
+rsync -a linux/ root-$version/ || true
 
 # https://github.com/RPi-Distro/repo/issues/51
 mkdir -p root-$version/lib/firmware/brcm

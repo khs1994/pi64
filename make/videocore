@@ -4,6 +4,8 @@ set -ex
 
 mkdir -p build && cd build
 
+if [ -d linux/opt ];then exit 0; fi
+
 git clone --depth=1 https://github.com/raspberrypi/userland
 
 rm -rf ./userland/build && mkdir -p ./userland/build

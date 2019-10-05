@@ -19,11 +19,10 @@ var (
 		"apt", "systemd", "systemd-sysv", "udev", "kmod", "locales", "sudo",
 
 		// Networking packages dhcpcd5 isc-dhcp-client
-		"netbase", "net-tools", "ethtool", "iproute2", "iputils-ping", "ifupdown", "dhcpcd5", "firmware-brcm80211", "wpasupplicant", "ntp",
+		"netbase", "net-tools", "ethtool", "iproute", "iputils-ping", "ifupdown", "dhcpcd5", "firmware-brcm80211", "wpasupplicant", "ntp",
 
 		// Packages required by the pi64-config CLI tool
-		// buster not include sysbench
-		"dialog", "wireless-tools", "parted",
+		"dialog", "sysbench", "wireless-tools", "parted",
 
 		// Packages required by the pi64-update CLI tool
 		"ca-certificates",
@@ -55,7 +54,7 @@ func installDebian() error {
 	multistrapOpts := multistrap.Options{
 		Directory:  rootDir,
 		Arch:       "arm64",
-		Suite:      "buster",
+		Suite:      "stretch",
 		Components: []string{"main", "contrib", "non-free"},
 		Packages:   packages,
 	}
@@ -83,14 +82,14 @@ func installDebian() error {
 	}
 
 	aptSources := []byte(`
-deb http://cdn-fastly.deb.debian.org/debian buster main contrib non-free
-deb-src http://cdn-fastly.deb.debian.org/debian buster main contrib non-free
+deb http://cdn-fastly.deb.debian.org/debian stretch main contrib non-free
+deb-src http://cdn-fastly.deb.debian.org/debian stretch main contrib non-free
 
-deb http://cdn-fastly.deb.debian.org/debian buster-updates main contrib non-free
-deb-src http://cdn-fastly.deb.debian.org/debian buster-updates main contrib non-free
+deb http://cdn-fastly.deb.debian.org/debian stretch-updates main contrib non-free
+deb-src http://cdn-fastly.deb.debian.org/debian stretch-updates main contrib non-free
 
-deb http://cdn-fastly.deb.debian.org/debian-security buster/updates main contrib non-free
-deb-src http://cdn-fastly.deb.debian.org/debian-security buster/updates main contrib non-free
+deb http://cdn-fastly.deb.debian.org/debian-security stretch/updates main contrib non-free
+deb-src http://cdn-fastly.deb.debian.org/debian-security stretch/updates main contrib non-free
 `)
 
 	if err := ioutil.WriteFile("/etc/apt/sources.list", aptSources[1:], 0644); err != nil {

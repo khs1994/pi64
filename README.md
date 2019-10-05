@@ -1,10 +1,10 @@
 # pi64
 
-pi64 is an experimental 64-bit OS for the Raspberry Pi 3. It is based on Debian Buster(10) and backed by a 5.3 Linux kernel.
+pi64 is an experimental 64-bit OS for the Raspberry Pi 3. It is based on Debian Stretch(9) and backed by a 5.3 Linux kernel.
 
 ## Compare upstream
 
-* https://github.com/bamarni/pi64/compare/master...khs1994:buster
+* https://github.com/bamarni/pi64/compare/master...khs1994:stretch
 
 ## Releases
 
@@ -40,7 +40,7 @@ This would make sure the latest release from https://github.com/bamarni/pi64-ker
 
 ### Can I still run 32-bit programs with pi64?
 
-You should be able to run 32-bit programs out of the box as long as they're statically linked. You can check this with the `file` command : 
+You should be able to run 32-bit programs out of the box as long as they're statically linked. You can check this with the `file` command :
 
     $ file ./my-executable
     ./my-executable: ELF 32-bit LSB executable, ARM, EABI5 version 1 (SYSV), statically linked, not stripped

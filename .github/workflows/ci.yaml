@@ -6,7 +6,7 @@ name: CI
 
 jobs:
   build:
-    name: Build-Dist-Buster
+    name: Build-Dist-Stretch
     runs-on: ubuntu-latest
     if: |
       ! (contains( github.event.head_commit.message, '[skip ci]')
@@ -78,7 +78,7 @@ jobs:
           source=http://cdn-fastly.deb.debian.org/debian
           keyring=debian-archive-keyring
           components=main contrib non-free
-          suite=buster
+          suite=stretch
           packages=${deb_packages}"> ./multistrap.config
 
           cat multistrap.config
@@ -94,6 +94,15 @@ jobs:
           export PATH=$GOPATH/bin:$PATH
           cd $(go env GOPATH)/src/github.com/bamarni/pi64
 
+          mkdir -p build/linux
+
+          echo "kernelversion=5.3.0" > build/.env
+          source build/.env
+          release="2019-10-04.1570185382"
+
+          curl -fsSL https://github.com/khs1994/pi64/releases/download/${release}-kernel-${kernelversion}/linux-${kernelversion}.tar.gz \
+            | tar -zxvf - -C build/linux
+
           sudo make build/pi64-lite.zip
         name: Build
       - run: |
@@ -102,7 +111,7 @@ jobs:
           export PATH=$GOPATH/bin:$PATH
           cd $(go env GOPATH)/src/github.com/bamarni/pi64
 
-          ls -la build
+          ls -la build/*
         name: Show Build Dir
       - name: Check linux kernel config
         run: |
@@ -123,14 +132,13 @@ jobs:
           test -n "$GITHUB_TOKEN" && echo 0 || echo 1
           git remote set-url origin https://${GITHUB_USER:-khs1994}:${GITHUB_TOKEN:?must set}@github.com/${GITHUB_USER:-khs1994}/pi64
           make release
-          make release/kernel
         env:
           GITHUB_TOKEN: ${{ github.token }}
           GITHUB_USER: khs1994
         name: Release
         if: github.event_name == 'push'
   docker-build:
-    name: Docker-Build-Dist-Buster
+    name: Docker-Build-Dist-Stretch
     runs-on: ubuntu-latest
     if: |
       github.event_name == 'push' &&
@@ -148,12 +156,22 @@ jobs:
       - uses: docker-practice/actions-setup-docker@master
       - run: git remote set-url origin https://${GITHUB_USER:-khs1994}:${GITHUB_TOKEN:?must set}@github.com/${GITHUB_USER:-khs1994}/pi64
       - run: docker build -t pi64 .
-      - run: mkdir -p build
-      - run: docker run -t --privileged --rm pi64 ls -la
-      - run: docker run -t --privileged --rm -e GITHUB_USER -v $PWD/build:/go/src/github.com/bamarni/pi64/build pi64 make test
-      - run: docker run -t --privileged --rm -e GITHUB_USER -v $PWD/build:/go/src/github.com/bamarni/pi64/build pi64 make build/pi64-lite.zip
+      - run: mkdir -p build/linux
+      - run: |
+          set -x
+          echo "kernelversion=5.3.0" > build/.env
+          source build/.env
+          release="2019-10-04.1570185382"
+
+          curl -fsSL https://github.com/khs1994/pi64/releases/download/${release}-kernel-${kernelversion}/linux-${kernelversion}.tar.gz \
+            | tar -zxvf - -C build/linux
+      - run: ls -la build
+      - run: rm -rf .dockerignore
+      - run: docker run -t --privileged --rm -v $PWD:/go/src/github.com/bamarni/pi64 pi64 ls -la build/*
+      - run: docker run -t --privileged --rm -e GITHUB_USER -v $PWD:/go/src/github.com/bamarni/pi64 pi64 make test
+      - run: docker run -t --privileged --rm -e GITHUB_USER -v $PWD:/go/src/github.com/bamarni/pi64 pi64 make build/pi64-lite.zip
       - run: ls -la build/*
-      - run: docker run -t --rm -v $PWD/build:/go/src/github.com/bamarni/pi64/build -e GITHUB_TOKEN -e GITHUB_USER pi64 make release
+      - run: docker run -t --rm -v $PWD:/go/src/github.com/bamarni/pi64 -e GITHUB_TOKEN -e GITHUB_USER pi64 make release
         if: github.event_name == 'push'
-      - run: docker run -t --rm -v $PWD/build:/go/src/github.com/bamarni/pi64/build -e GITHUB_TOKEN -e GITHUB_USER pi64 make release/kernel
-        if: github.event_name == 'push'
+      # - run: docker run -t --rm -v $PWD:/go/src/github.com/bamarni/pi64 -e GITHUB_TOKEN -e GITHUB_USER pi64 make release/kernel
+        # if: github.event_name == 'push'

@@ -128,13 +128,11 @@ func configurePackages() error {
 		return err
 	}
 
-	// buster removed /var/lib/dpkg/info/dash.preinst
-	// https://salsa.debian.org/debian/dash/commit/020393f77a74ded57ee1bc3f1389ea0833dc5b09
-	// if err := runCommand("/var/lib/dpkg/info/dash.preinst", "install"); err != nil {
-	// 	return err
-	// }
+	if err := runCommand("/var/lib/dpkg/info/dash.preinst", "install"); err != nil {
+		return err
+	}
 	if err := runCommand("/usr/bin/dpkg", "--configure", "-a"); err != nil {
-		return os.Remove(policyPath)
+	    os.Remove(policyPath)
 		return err
 	}
 	return os.Remove(policyPath)

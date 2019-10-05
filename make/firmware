@@ -4,6 +4,8 @@ set -ex
 
 cd build
 
+if [ -d linux/boot ];then exit 0; fi
+
 git clone --depth=1 https://github.com/raspberrypi/firmware
 
 cd firmware/boot
