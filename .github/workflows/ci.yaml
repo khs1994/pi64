@@ -9,7 +9,6 @@ jobs:
     name: Docker-Build-Dist-Buster
     runs-on: ubuntu-latest
     if: |
-      github.event_name == 'push' &&
       ! (contains( github.event.head_commit.message, '[skip ci]')
       || contains( github.event.head_commit.message, '[skip action]')
       || contains( github.event.head_commit.message, '[ci skip]')
@@ -29,5 +28,7 @@ jobs:
       - run: docker run -t --privileged --rm -e GITHUB_USER -v $PWD/build:/go/src/github.com/bamarni/pi64/build pi64 make test
       - run: docker run -t --privileged --rm -e GITHUB_USER -v $PWD/build:/go/src/github.com/bamarni/pi64/build pi64 make build/pi64-lite.zip
       - run: ls -la build/*
-      - run: docker run -t --rm -v $PWD/build:/go/src/github.com/bamarni/pi64/build -e GITHUB_TOKEN -e GITHUB_USER pi64 make release
-      - run: docker run -t --rm -v $PWD/build:/go/src/github.com/bamarni/pi64/build -e GITHUB_TOKEN -e GITHUB_USER pi64 make release/kernel
+      - run: docker run -t --privileged --rm -v $PWD:/go/src/github.com/bamarni/pi64 -e GITHUB_TOKEN -e GITHUB_USER pi64 make release
+        if: github.event_name == 'push'
+      - run: docker run -t --privileged --rm -v $PWD:/go/src/github.com/bamarni/pi64 -e GITHUB_TOKEN -e GITHUB_USER pi64 make release/kernel
+        if: github.event_name == 'push'
