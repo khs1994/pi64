@@ -2,15 +2,15 @@
 
 all: build/pi64-lite.zip build/pi64-desktop.zip
 
-build/pi64-lite.zip: build/pi64-lite.img
+build/pi64-lite.zip: list build/pi64-lite.img
 	zip -9 -j build/pi64-lite.zip build/pi64-lite.img
 
 build/pi64-desktop.zip: build/pi64-desktop.img
 	zip -9 -j build/pi64-desktop.zip build/pi64-desktop.img
 
-build/pi64-lite.img: build/linux build/userland build/firmware
+build/pi64-lite.img: list build/linux build/userland build/firmware
 	apt update || sudo apt update || true
-	ls -la build
+	list
 	pi64-build -build-dir ./build -version lite
 
 build/pi64-desktop.img: build/linux build/userland build/firmware
@@ -23,12 +23,11 @@ build/linux.tar.gz.sig: build/linux.tar.gz
 build/linux.tar.gz: build/linux
 	cd build/linux && tar -zcvf ../linux.tar.gz .
 
-build/linux: build/linux-src build/firmware build/userland
+build/linux: list build/linux-src build/firmware build/userland
 	bash make/linux
 	touch build/linux # otherwise make will rebuild that target everytime (as build/linux-src gets altered by make/linux)
 
 build/linux-src:
-	ls -la build
 	bash make/linux-src
 
 build/userland:
@@ -57,3 +56,6 @@ get/linux:
 	mkdir -p build
 	echo "skip_build_kernel=1" | tee .env
 	curl -fsSL -o build/linux.tar.gz https://github.com/khs1994/pi64/releases/download/$(release)-kernel-$(kernelversion)/linux-$(kernelversion).tar.gz
+
+list:
+	ls -la build
