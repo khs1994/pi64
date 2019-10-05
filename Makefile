@@ -47,3 +47,12 @@ release/kernel: build/linux.tar.gz
 test:
 	apt update || sudo apt update || true
 	bash make/test
+
+kernelversion := 5.3.3
+release := 2019-10-05.1570283848
+
+get/linux:
+	mkdir -p build/linux
+	echo "skip_build_kernel=1" | tee .env
+	curl -fsSL https://github.com/khs1994/pi64/releases/download/$(release)-kernel-$(kernelversion)/linux-$(kernelversion).tar.gz \
+		| tar -zxvf - -C build/linux
