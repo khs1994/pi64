@@ -57,8 +57,7 @@ jobs:
           go install github.com/bamarni/pi64/cmd/pi64-build
           ls -la $HOME/go/bin || true
           sudo ln -s $HOME/go/bin/pi64-build /usr/bin || true
-          sudo pi64-build || true
-          sudo rm -rf build
+          sudo ln -s $HOME/go/bin/github-release /usr/bin || true
         name: Setup Env
       - run: |
           set -x
@@ -118,12 +117,10 @@ jobs:
           export PATH=$GOPATH/bin:$PATH
           cd $(go env GOPATH)/src/github.com/bamarni/pi64
 
-          sudo chown `id -u`:`id -g` build
-
           test -n "$GITHUB_TOKEN" && echo 0 || echo 1
           git remote set-url origin https://${GITHUB_USER:-khs1994}:${GITHUB_TOKEN:?must set}@github.com/${GITHUB_USER:-khs1994}/pi64
-          make release
-          make release/kernel
+          sudo make release
+          sudo make release/kernel
         env:
           GITHUB_TOKEN: ${{ github.token }}
           GITHUB_USER: khs1994
