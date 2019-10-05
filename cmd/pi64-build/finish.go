@@ -24,7 +24,15 @@ root_devmap=$2
 
 rm -rf root-$version/var/lib/apt/lists/* root-$version/etc/apt/sources.list.d/*
 
-rsync -a linux/ root-$version/
+source ../.env
+
+ls -la
+
+if [ -n "$skip_build_kernel" ];then
+  tar -zxvf linux.tar.gz -C root-$version
+else
+  rsync -a linux/ root-$version/
+fi
 
 # https://github.com/RPi-Distro/repo/issues/51
 mkdir -p root-$version/lib/firmware/brcm

@@ -10,6 +10,7 @@ build/pi64-desktop.zip: build/pi64-desktop.img
 
 build/pi64-lite.img: build/linux build/userland build/firmware
 	apt update || sudo apt update || true
+	ls -la build
 	pi64-build -build-dir ./build -version lite
 
 build/pi64-desktop.img: build/linux build/userland build/firmware
@@ -27,6 +28,7 @@ build/linux: build/linux-src build/firmware build/userland
 	touch build/linux # otherwise make will rebuild that target everytime (as build/linux-src gets altered by make/linux)
 
 build/linux-src:
+	ls -la build
 	bash make/linux-src
 
 build/userland:
@@ -52,7 +54,6 @@ kernelversion := 5.3.3
 release := 2019-10-05.1570283848
 
 get/linux:
-	mkdir -p build/linux
+	mkdir -p build
 	echo "skip_build_kernel=1" | tee .env
-	curl -fsSL https://github.com/khs1994/pi64/releases/download/$(release)-kernel-$(kernelversion)/linux-$(kernelversion).tar.gz \
-		| tar -zxvf - -C build/linux
+	curl -fsSL -o build/linux.tar.gz https://github.com/khs1994/pi64/releases/download/$(release)-kernel-$(kernelversion)/linux-$(kernelversion).tar.gz
