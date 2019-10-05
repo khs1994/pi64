@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"os"
 	"os/exec"
+	"os/signal"
 	"os/user"
 	"strings"
 	"syscall"
@@ -61,13 +62,13 @@ func checkError(err error) {
 	if err != nil {
 		fmt.Println(err)
 		Debug(fmt.Sprintf("%s", err))
-		// sig := make(chan os.Signal)
-		// signal.Notify(sig, syscall.SIGINT)
-		// for {
-		// 	select {
-		// 	case <-sig:
-		// 	}
-		// }
+		sig := make(chan os.Signal)
+		signal.Notify(sig, syscall.SIGINT)
+		for {
+			select {
+			case <-sig:
+			}
+		}
 	}
 }
 
@@ -130,11 +131,7 @@ func configurePackages() error {
 
 	// buster removed /var/lib/dpkg/info/dash.preinst
 	// https://salsa.debian.org/debian/dash/commit/020393f77a74ded57ee1bc3f1389ea0833dc5b09
-	// if err := runCommand("/var/lib/dpkg/info/dash.preinst", "install"); err != nil {
-	// 	return err
-	// }
-
-	if err := runCommand("/usr/bin/dpkg", "--configure", "base-passwd"); err != nil {
+	if err := runCommand("/var/lib/dpkg/info/base-passwd.preinst", "install"); err != nil {
 		return err
 	}
 
