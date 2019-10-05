@@ -23,7 +23,7 @@ jobs:
       - uses: docker-practice/actions-setup-docker@master
       - run: git remote set-url origin https://${GITHUB_USER:-khs1994}:${GITHUB_TOKEN:?must set}@github.com/${GITHUB_USER:-khs1994}/pi64
       - run: docker build -t pi64 .
-      - run: mkdir -p build/linux
+      - run: sudo mkdir -p build/linux
       - run: |
           set -x
           echo "kernelversion=5.3.3" > build/.env
@@ -32,7 +32,7 @@ jobs:
           release="2019-10-05.1570277623"
 
           curl -fsSL https://github.com/khs1994/pi64/releases/download/${release}-kernel-${kernelversion}/linux-${kernelversion}.tar.gz \
-            | tar -zxvf - -C build/linux
+            | sudo tar -zxvf - -C build/linux
       - run: ls -la build
       - run: docker run -t --privileged --rm -v $PWD:/go/src/github.com/bamarni/pi64 pi64 ls -la build/linux/usr/src
       - run: docker run -t --privileged --rm -e GITHUB_USER -v $PWD:/go/src/github.com/bamarni/pi64 pi64 make test
