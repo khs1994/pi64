@@ -133,6 +133,11 @@ func configurePackages() error {
 	// if err := runCommand("/var/lib/dpkg/info/dash.preinst", "install"); err != nil {
 	// 	return err
 	// }
+
+	if err := runCommand("/usr/bin/dpkg", "--configure", "base-passwd"); err != nil {
+		return err
+	}
+
 	if err := runCommand("/usr/bin/dpkg", "--configure", "-a"); err != nil {
 		os.Remove(policyPath)
 		return err
