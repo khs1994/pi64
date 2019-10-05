@@ -149,5 +149,15 @@ iface wlan0 inet manual
 		return err
 	}
 
+	// buster only
+	// try fix error:
+	// Setting up base-files (10.3+deb10u1) ...
+    // chown: invalid user: 'root:root'
+    // dpkg: error processing package base-files (--configure):
+    // installed base-files package post-installation script subprocess returned error exit status 1
+	if err := ioutil.WriteFile("/etc/passwd",[]byte("root:x:0:0:root:/root:/bin/bash"),0644); err != nil {
+		return err
+	}
+
 	return os.Remove("/usr/bin/qemu-aarch64-static")
 }
