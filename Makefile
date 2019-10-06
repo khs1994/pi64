@@ -8,11 +8,11 @@ build/pi64-lite.zip: build/pi64-lite.img
 build/pi64-desktop.zip: build/pi64-desktop.img
 	zip -9 -j build/pi64-desktop.zip build/pi64-desktop.img
 
-build/pi64-lite.img: build/linux build/userland build/firmware
+build/pi64-lite.img: build/linux build/userland build/firmware build/pi64-tool
 	apt update || sudo apt update || true
 	pi64-build -build-dir ./build -version lite
 
-build/pi64-desktop.img: build/linux build/userland build/firmware
+build/pi64-desktop.img: build/linux build/userland build/firmware build/pi64-tool
 	apt update || sudo apt update || true
 	pi64-build -build-dir ./build -version desktop
 
@@ -20,6 +20,7 @@ build/linux.tar.gz.sig: build/linux.tar.gz
 	cd build && gpg2 --output linux.tar.gz.sig --detach-sign linux.tar.gz
 
 build/linux.tar.gz: build/linux
+	rm -rf build/linux/usr/bin/pi64-*
 	cd build/linux && tar -zcvf ../linux.tar.gz .
 
 build/linux: build/linux-src build/firmware build/userland
@@ -34,6 +35,10 @@ build/userland:
 
 build/firmware:
 	bash make/firmware
+
+build/pi64-tool:
+	GOOS=linux GOARCH=arm64 go build -o ./build/linux/usr/bin/pi64-update github.com/bamarni/pi64/cmd/pi64-update
+	GOOS=linux GOARCH=arm64 go build -o ./build/linux/usr/bin/pi64-config github.com/bamarni/pi64/cmd/pi64-config
 
 validate:
 	bash make/validate
