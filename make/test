@@ -15,7 +15,7 @@ aptsources=Debian
 source=http://cdn-fastly.deb.debian.org/debian
 keyring=debian-archive-keyring
 components=main contrib non-free
-suite=buster
+suite=bullseye
 packages=${deb_packages}"> ./multistrap.config
 
 cat multistrap.config
