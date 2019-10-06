@@ -19,7 +19,7 @@ var (
 		"apt", "systemd", "systemd-sysv", "udev", "kmod", "locales", "sudo",
 
 		// Networking packages dhcpcd5 isc-dhcp-client
-		"netbase", "net-tools", "ethtool", "iproute2", "iputils-ping", "ifupdown", "isc-dhcp-client", "firmware-brcm80211", "wpasupplicant", "ntp",
+		"netbase", "net-tools", "ethtool", "iproute2", "iputils-ping", "ifupdown", "dhcpcd5", "firmware-brcm80211", "wpasupplicant", "ntp",
 
 		// Packages required by the pi64-config CLI tool
 		// buster not include sysbench
