@@ -31,10 +31,10 @@ jobs:
       - run: echo ''
         name: "!!! Get kernel from GitHub, Don't build !!!"
         if: |
-          ! contains( github.event.head_commit.message, '[build kernel]')
+          ! (contains( github.event.head_commit.message, '[build kernel]'))
       - run: docker run -t --privileged --rm -v $PWD:/go/src/github.com/bamarni/pi64 pi64 make get/linux
         if: |
-          ! contains( github.event.head_commit.message, '[build kernel]')
+          ! (contains( github.event.head_commit.message, '[build kernel]'))
 
       - run: docker run -t --privileged --rm -e GITHUB_USER -v $PWD/build:/go/src/github.com/bamarni/pi64/build pi64 make build/pi64-lite.zip
       - run: docker run -t --privileged --rm -v $PWD:/go/src/github.com/bamarni/pi64 -e GITHUB_TOKEN -e GITHUB_USER pi64 make check/kernel
