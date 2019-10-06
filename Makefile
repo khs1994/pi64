@@ -58,7 +58,7 @@ check/kernel:
 		| CONFIG=build/linux-src/.config bash || true
 
 kernelversion := 5.3.3
-release := 2019-10-05.1570283848
+release := 2019-10-06.1570365700
 
 get/linux:
 	mkdir -p build/linux
