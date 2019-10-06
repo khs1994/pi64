@@ -2,7 +2,7 @@
 
 set -ex
 
-source .env
+source .env || true
 
 if [ -n "$skip_build_kernel" ];then exit 0; fi
 
