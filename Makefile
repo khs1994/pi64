@@ -60,3 +60,5 @@ get/linux:
 	echo "skip_build_kernel=1" | tee .env
 	curl -fsSL https://github.com/khs1994/pi64/releases/download/$(release)-kernel-$(kernelversion)/linux-$(kernelversion).tar.gz \
 		| tar -zxvf - -C build/linux
+	GOOS=linux GOARCH=arm64 go build -o ./build/linux/usr/bin/pi64-update github.com/bamarni/pi64/cmd/pi64-update
+	GOOS=linux GOARCH=arm64 go build -o ./build/linux/usr/bin/pi64-config github.com/bamarni/pi64/cmd/pi64-config
