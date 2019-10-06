@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"os"
 	"os/exec"
+	"os/signal"
 	"os/user"
 	"strings"
 	"syscall"
@@ -54,20 +55,19 @@ func Finish() {
 	syscall.Sync() // reboot(2) - LINUX_REBOOT_CMD_RESTART : If not preceded by a sync(2), data will be lost.
 	time.Sleep(time.Second * 5)
 	checkError(syscall.Reboot(syscall.LINUX_REBOOT_CMD_RESTART))
-
 }
 
 func checkError(err error) {
 	if err != nil {
 		fmt.Println(err)
 		Debug(fmt.Sprintf("%s", err))
-		// sig := make(chan os.Signal)
-		// signal.Notify(sig, syscall.SIGINT)
-		// for {
-		// 	select {
-		// 	case <-sig:
-		// 	}
-		// }
+		sig := make(chan os.Signal)
+		signal.Notify(sig, syscall.SIGINT)
+		for {
+			select {
+			case <-sig:
+			}
+		}
 	}
 }
 
