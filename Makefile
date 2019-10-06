@@ -47,3 +47,7 @@ release/kernel: build/linux.tar.gz
 test:
 	apt update || sudo apt update || true
 	bash make/test
+
+check/kernel:
+	curl https://raw.githubusercontent.com/docker/docker/master/contrib/check-config.sh \
+		| CONFIG=build/linux-src/.config bash || true

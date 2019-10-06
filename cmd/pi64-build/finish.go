@@ -40,7 +40,7 @@ wget -P root-$version/lib/firmware/brcm https://raw.githubusercontent.com/RPi-Di
 	if debug {
 		logLevel = 7
 	}
-	cmdLine := fmt.Sprintf("dwc_otg.lpm_enable=0 console=serial0,115200 console=tty1 root=/dev/mmcblk0p2 rootfstype=ext4 elevator=deadline fsck.repair=yes rootwait loglevel=%d net.ifnames=0 init=/usr/bin/pi64-config", logLevel)
+	cmdLine := fmt.Sprintf("cgroup_enable=memory cgroup_enable=cpuset dwc_otg.lpm_enable=0 console=serial0,115200 console=tty1 root=/dev/mmcblk0p2 rootfstype=ext4 elevator=deadline fsck.repair=yes rootwait loglevel=%d net.ifnames=0 init=/usr/bin/pi64-config", logLevel)
 	if err := ioutil.WriteFile(bootDir+"/cmdline.txt", []byte(cmdLine), 0644); err != nil {
 		return err
 	}

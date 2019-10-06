@@ -27,6 +27,7 @@ jobs:
       - run: docker run -t --privileged --rm pi64 ls -la
       - run: docker run -t --privileged --rm -e GITHUB_USER -v $PWD/build:/go/src/github.com/bamarni/pi64/build pi64 make test
       - run: docker run -t --privileged --rm -e GITHUB_USER -v $PWD/build:/go/src/github.com/bamarni/pi64/build pi64 make build/pi64-lite.zip
+      - run: docker run -t --privileged --rm -v $PWD:/go/src/github.com/bamarni/pi64 -e GITHUB_TOKEN -e GITHUB_USER pi64 make check/kernel
       - run: ls -la build/*
       - run: docker run -t --privileged --rm -v $PWD:/go/src/github.com/bamarni/pi64 -e GITHUB_TOKEN -e GITHUB_USER pi64 make release
         if: github.event_name == 'push'

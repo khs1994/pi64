@@ -6,6 +6,29 @@ pi64 is an experimental 64-bit OS for the Raspberry Pi 3. It is based on Debian 
 
 * https://github.com/bamarni/pi64/compare/master...khs1994:buster
 
+## 提示
+
+### [iptables is being replaced by nftables starting with Debian Buster](https://wiki.debian.org/iptables)
+
+由于 Docker 不支持 nftables,切换到原始 iptables 命令
+
+```bash
+# update-alternatives --set iptables /usr/sbin/iptables-legacy
+# update-alternatives --set ip6tables /usr/sbin/ip6tables-legacy
+# update-alternatives --set arptables /usr/sbin/arptables-legacy
+# update-alternatives --set ebtables /usr/sbin/ebtables-legacy
+```
+
+* https://github.com/moby/moby/issues/38099
+* https://github.com/moby/moby/issues/26824
+* https://github.com/docker/libnetwork/pull/2285
+* https://github.com/docker/libnetwork/pull/2343
+* https://github.com/moby/moby/issues/39590
+
+### Docker 所需内核参数
+
+* https://github.com/moby/moby/pull/3052/files#diff-79691434980a21ca457789938a9410c3
+
 ## Releases
 
 The latest images are always available in the [releases](https://github.com/bamarni/pi64/releases) section.
@@ -40,7 +63,7 @@ This would make sure the latest release from https://github.com/bamarni/pi64-ker
 
 ### Can I still run 32-bit programs with pi64?
 
-You should be able to run 32-bit programs out of the box as long as they're statically linked. You can check this with the `file` command : 
+You should be able to run 32-bit programs out of the box as long as they're statically linked. You can check this with the `file` command :
 
     $ file ./my-executable
     ./my-executable: ELF 32-bit LSB executable, ARM, EABI5 version 1 (SYSV), statically linked, not stripped

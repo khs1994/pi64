@@ -16,7 +16,7 @@ import (
 var (
 	packages = []string{
 		// Base packages
-		"apt", "systemd", "systemd-sysv", "udev", "kmod", "locales", "sudo",
+		"apt", "systemd", "systemd-sysv", "udev", "kmod", "locales", "sudo", "vim",
 
 		// Networking packages dhcpcd5 isc-dhcp-client
 		"netbase", "net-tools", "ethtool", "iproute2", "iputils-ping", "ifupdown", "dhcpcd5", "firmware-brcm80211", "wpasupplicant", "ntp",
