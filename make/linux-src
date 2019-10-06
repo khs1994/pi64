@@ -13,8 +13,7 @@ git clone --depth=1 -b rpi-5.3.y https://github.com/raspberrypi/linux.git linux-
 cd linux-src
 
 # cp ../../make/kernel-config.txt ./.config
-
-make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- bcmrpi3_defconfig # olddefconfig
+curl -o .config https://raw.githubusercontent.com/raspberrypi/linux/rpi-5.3.y/arch/arm64/configs/bcmrpi3_defconfig
 
 echo "
 
@@ -36,6 +35,7 @@ CONFIG_CGROUP_HUGETLB=m
 CONFIG_BRIDGE_VLAN_FILTERING=y
 " | tee -a .config
 
+# make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- bcmrpi3_defconfig
 make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- olddefconfig
 
 make -j $(nproc) ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu-
