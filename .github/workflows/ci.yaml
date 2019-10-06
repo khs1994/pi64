@@ -26,19 +26,24 @@ jobs:
       - run: mkdir -p build
       - run: docker run -t --privileged --rm pi64 ls -la
       - run: docker run -t --privileged --rm -e GITHUB_USER -v $PWD/build:/go/src/github.com/bamarni/pi64/build pi64 make test
+
       # 不包含 [build kernel] 则获取已构建的 kernel
       - run: echo ''
-        name: Get kernel from GitHub, Don't build
+        name: "!!! Get kernel from GitHub, Don't build !!!"
         if: |
           ! contains( github.event.head_commit.message, '[build kernel]')
       - run: docker run -t --privileged --rm -v $PWD:/go/src/github.com/bamarni/pi64 pi64 make get/linux
         if: |
           ! contains( github.event.head_commit.message, '[build kernel]')
+
       - run: docker run -t --privileged --rm -e GITHUB_USER -v $PWD/build:/go/src/github.com/bamarni/pi64/build pi64 make build/pi64-lite.zip
       - run: docker run -t --privileged --rm -v $PWD:/go/src/github.com/bamarni/pi64 -e GITHUB_TOKEN -e GITHUB_USER pi64 make check/kernel
       - run: ls -la build/*
       - run: docker run -t --privileged --rm -v $PWD:/go/src/github.com/bamarni/pi64 -e GITHUB_TOKEN -e GITHUB_USER pi64 make release
         if: github.event_name == 'push'
       # 包含 [build kernel] 则 release kernel
+      - run: echo ""
+        name: "!!! Release kernel !!!"
+        if: github.event_name == 'push' && contains( github.event.head_commit.message, '[build kernel]')
       - run: docker run -t --privileged --rm -v $PWD:/go/src/github.com/bamarni/pi64 -e GITHUB_TOKEN -e GITHUB_USER pi64 make release/kernel
         if: github.event_name == 'push' && contains( github.event.head_commit.message, '[build kernel]')
