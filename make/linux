@@ -42,10 +42,6 @@ rsync -a --files-from=../hdr_files ./ ../linux/usr/src/$hdr_dir
 
 cd ..
 
-
-GOOS=linux GOARCH=arm64 go build -o ./linux/usr/bin/pi64-update github.com/bamarni/pi64/cmd/pi64-update
-GOOS=linux GOARCH=arm64 go build -o ./linux/usr/bin/pi64-config github.com/bamarni/pi64/cmd/pi64-config
-
 cp -R /opt/vc linux/opt/
 mv linux/opt/vc/bin/* linux/usr/bin/
 
