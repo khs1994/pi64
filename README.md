@@ -29,6 +29,12 @@ pi64 is an experimental 64-bit OS for the Raspberry Pi 3. It is based on Debian 
 
 * https://github.com/moby/moby/pull/3052/files#diff-79691434980a21ca457789938a9410c3
 
+### debug
+
+系统首次启动失败(初始化失败)
+
+`SD` 卡插入电脑,查看 `boot/pi64-config-debug.txt` 文件内容.
+
 ## Releases
 
 The latest images are always available in the [releases](https://github.com/bamarni/pi64/releases) section.
