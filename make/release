@@ -4,7 +4,7 @@ set -ex
 
 cd build
 
-dist=buster
+dist=sid
 release=$(date +"%Y-%m-%d.%s")-${dist}
 
 git tag $release || true

@@ -1,10 +1,10 @@
 # pi64
 
-pi64 is an experimental 64-bit OS for the Raspberry Pi 3. It is based on Debian Buster(10) and backed by a 5.8 Linux kernel.
+pi64 is an experimental 64-bit OS for the Raspberry Pi 3. It is based on Debian sid(unstable) and backed by a 5.8 Linux kernel.
 
 ## Compare upstream
 
-* https://github.com/bamarni/pi64/compare/master...khs1994:buster
+* https://github.com/bamarni/pi64/compare/master...khs1994:sid
 
 ## 提示
 
