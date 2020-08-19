@@ -57,8 +57,8 @@ check/kernel:
 	curl https://raw.githubusercontent.com/docker/docker/master/contrib/check-config.sh \
 		| CONFIG=build/linux-src/.config bash || true
 
-kernelversion := 5.3.3
-release := 2019-10-06.1570365700
+kernelversion := 5.8.1
+release := 2020-08-19.1597827725
 
 get/linux:
 	mkdir -p build/linux
