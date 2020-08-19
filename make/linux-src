@@ -8,18 +8,18 @@ source ../.env || true
 
 if [ -n "$skip_build_kernel" ];then exit 0; fi
 
-git clone --depth=1 -b rpi-5.3.y https://github.com/raspberrypi/linux.git linux-src
+git clone --depth=1 -b rpi-5.8.y https://github.com/raspberrypi/linux.git linux-src
 
 cd linux-src
 
 # cp ../../make/kernel-config.txt ./.config
-curl -o .config https://raw.githubusercontent.com/raspberrypi/linux/rpi-5.3.y/arch/arm64/configs/bcmrpi3_defconfig
+curl -o .config https://raw.githubusercontent.com/raspberrypi/linux/rpi-5.8.y/arch/arm64/configs/bcmrpi3_defconfig
 
 echo "
 
-CONFIG_MEMCG=y
+# CONFIG_MEMCG=y
 CONFIG_CGROUP_PIDS=y
-CONFIG_BLK_CGROUP=y
+# CONFIG_BLK_CGROUP=y
 CONFIG_BLK_DEV_THROTTLING=y
 CONFIG_CGROUP_PERF=y
 CONFIG_CGROUP_NET_PRIO=y
