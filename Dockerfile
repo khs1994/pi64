@@ -1,6 +1,8 @@
-FROM ubuntu:18.04
+FROM ubuntu:20.04
 
-ENV GOPATH=/go PATH=/go/bin:/usr/lib/go-1.10/bin:$PATH
+ENV GOPATH=/go \
+    PATH=/go/bin:/usr/lib/go-1.14/bin:$PATH \
+    DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update \
     && apt-get -y install \
@@ -18,7 +20,7 @@ RUN apt-get update \
         wget \
         dosfstools \
         kpartx \
-        golang-1.10-go \
+        golang-1.14-go \
         rsync \
         flex bison libssl-dev gnupg2 curl \
     && apt-get clean \
